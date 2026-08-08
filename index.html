@@ -11,11 +11,11 @@
       @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
     <style>
-      .site-header{width:calc(100% - 28px);margin:14px auto 0;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(290px,.7fr) minmax(250px,.68fr);align-items:stretch;gap:0;min-height:308px;padding:0;border:1px solid var(--line);font-size:inherit;letter-spacing:0;text-transform:none}
+      .site-header{position:sticky;top:12px;z-index:8;width:calc(100% - 28px);margin:14px auto 0;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(290px,.7fr) minmax(250px,.68fr);align-items:stretch;gap:0;min-height:308px;padding:0;border:1px solid var(--line);font-size:inherit;letter-spacing:0;text-transform:none;background:rgba(243,243,239,.96);transition:min-height .45s cubic-bezier(.2,.7,.2,1),grid-template-columns .45s cubic-bezier(.2,.7,.2,1),background-color .3s ease,box-shadow .3s ease}
       .nav-panel{display:flex;min-height:306px;flex-direction:column;justify-content:space-between;padding:15px 11px 13px}
       .site-nav{display:flex;align-items:flex-start;gap:6px;color:var(--ink)}
-      .site-nav a{display:inline-flex;align-items:center;border:2px solid var(--ink);border-radius:999px;padding:4px 14px 7px;font-size:clamp(26px,2.12vw,40px);font-weight:400;line-height:.88;letter-spacing:-.055em;text-transform:none;transition:background-color .3s ease,color .3s ease,border-color .3s ease,transform .3s cubic-bezier(.2,.7,.2,1)}
-      .site-nav a:hover,.site-nav a:focus-visible{background:#1717ff;border-color:#1717ff;color:#fff;transform:translateY(-2px)}
+      .site-nav a{display:inline-flex;align-items:center;border:2px solid var(--ink);border-radius:999px;padding:4px 14px 7px;font-size:clamp(26px,2.12vw,40px);font-weight:400;line-height:.88;letter-spacing:-.055em;text-transform:none;transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+      .site-nav a:hover,.site-nav a:focus-visible{background:#1717ff;border-color:#1717ff;color:#fff}
       .site-nav a:focus-visible{outline:3px solid #1717ff;outline-offset:4px}
       .nav-signature{color:var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
       .header-intro,.header-contact{padding:19px 22px 21px;border-left:1px solid var(--line)}
@@ -29,14 +29,27 @@
       .header-links{display:flex;flex-direction:column;align-items:flex-start;margin-top:36px;gap:2px}
       .header-links a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color .25s ease,transform .25s ease}
       .header-links a:hover,.header-links a:focus-visible{color:#1717ff;transform:translateX(4px)}
+      .site-header.is-scrolled{min-height:72px;background:rgba(243,243,239,.88);box-shadow:0 10px 26px rgba(18,18,18,.08);backdrop-filter:blur(12px)}
+      .site-header.is-scrolled .nav-panel{min-height:70px;flex-direction:row;align-items:center;padding:10px 11px}
+      .site-header.is-scrolled .nav-signature{display:none}
+      .site-header.is-scrolled .site-nav a{font-size:clamp(17px,1.35vw,24px);padding:5px 12px 7px}
+      .site-header.is-scrolled .header-intro{align-items:center;padding:10px 18px}
+      .site-header.is-scrolled .header-intro p{display:-webkit-box;overflow:hidden;font-size:12px;line-height:1.2;letter-spacing:0;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+      .site-header.is-scrolled .header-contact{flex-direction:row;align-items:center;justify-content:flex-end;gap:12px;padding:10px 18px;font-size:12px;line-height:1.1;letter-spacing:0}
+      .site-header.is-scrolled .contact-label,.site-header.is-scrolled .header-location,.site-header.is-scrolled .header-links{display:none}
       @media(max-width:720px){
-        .site-header{width:calc(100% - 20px);margin-top:10px;grid-template-columns:1fr;min-height:0}
+        .site-header{top:8px;width:calc(100% - 20px);margin-top:10px;grid-template-columns:1fr;min-height:0}
         .nav-panel{min-height:180px;padding:14px 10px 16px}
         .site-nav a{font-size:clamp(28px,10vw,42px);padding:5px 15px 8px}
         .header-intro,.header-contact{min-height:190px;padding:18px 17px 20px;border-top:1px solid var(--line);border-left:0}
         .header-intro p{font-size:clamp(27px,8.8vw,42px)}
         .header-contact{font-size:clamp(25px,7.3vw,35px)}
         .header-links{margin-top:25px}
+        .site-header.is-scrolled{min-height:0}
+        .site-header.is-scrolled .nav-panel{min-height:72px;padding:10px}
+        .site-header.is-scrolled .site-nav a{font-size:21px;padding:5px 12px 7px}
+        .site-header.is-scrolled .header-intro{display:none}
+        .site-header.is-scrolled .header-contact{min-height:72px;padding:10px 14px;font-size:16px}
       }
     </style>
   </head>
@@ -71,7 +84,12 @@
       const esc=(value)=>String(value).replace(/[&<>"']/g,(char)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char]));
       function render(filter="全部"){grid.innerHTML=projects.filter((project)=>filter==="全部"||project.category===filter).map((project,index)=>`<button class="project-card card-${index+1}" data-project="${project.id}" aria-label="查看项目：${esc(project.title)}"><span class="project-visual ${project.visual}">${project.image?`<img src="${project.image}" alt="${esc(project.title)}项目预览">`:`<span class="placeholder-art" aria-hidden="true"><span class="art-label">PROJECT<br>STUDY</span><span class="art-number">${project.number}</span></span>`}</span><span class="project-caption"><span><strong>${esc(project.title)}</strong><small>${esc(project.subtitle)}</small></span><span class="caption-arrow" aria-hidden="true">↗</span></span></button>`).join("");grid.querySelectorAll("[data-project]").forEach((card)=>card.addEventListener("click",()=>openProject(card.dataset.project)));}
       function openProject(id){const project=projects.find((item)=>item.id===id);if(!project)return;const overlay=document.createElement("div");overlay.className="project-overlay";overlay.innerHTML=`<aside class="project-detail" role="dialog" aria-modal="true" aria-labelledby="project-title"><button class="close-button" aria-label="关闭项目详情" title="关闭">×</button><div class="detail-visual ${project.visual}">${project.image?`<img src="${project.image}" alt="${esc(project.title)}项目大图">`:`<span class="detail-placeholder">${project.number}</span>`}</div><div class="detail-body"><div class="detail-topline"><span>${project.number} / ${esc(project.category)}</span><span>${project.year}</span></div><h2 id="project-title">${esc(project.title)}</h2><p class="detail-subtitle">${esc(project.subtitle)}</p><div class="detail-services">${project.services.map((service)=>`<span>${esc(service)}</span>`).join("")}</div><div class="detail-copy"><div><span class="eyebrow">ROLE / 职责</span><p>${esc(project.role)}</p></div><div><span class="eyebrow">DESCRIPTION / 内容</span><p>${esc(project.description)}</p></div></div>${project.placeholder?'<p class="placeholder-note">此处为可替换的项目示例，后续可补充真实图片、项目名称与内容。</p>':''}</div></aside>`;document.body.appendChild(overlay);const close=()=>overlay.remove();overlay.addEventListener("click",(event)=>{if(event.target===overlay)close()});overlay.querySelector(".close-button").addEventListener("click",close);document.addEventListener("keydown",function onEscape(event){if(event.key==="Escape"){close();document.removeEventListener("keydown",onEscape)}});}
-      document.querySelectorAll("[data-filter]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-filter]").forEach((item)=>item.classList.toggle("active",item===button));render(button.dataset.filter)}));render();
+      document.querySelectorAll("[data-filter]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-filter]").forEach((item)=>item.classList.toggle("active",item===button));render(button.dataset.filter)}));
+      const navigation=document.querySelector("#navigation");
+      const updateNavigation=()=>navigation.classList.toggle("is-scrolled",window.scrollY>90);
+      window.addEventListener("scroll",updateNavigation,{passive:true});
+      updateNavigation();
+      render();
     </script>
   </body>
 </html>
