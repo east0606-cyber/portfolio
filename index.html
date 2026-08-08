@@ -17,6 +17,32 @@
       .hero-main{flex:1;min-height:0}
       .hero h1{margin:0}
       .hero-copy{padding-bottom:26px}
+      .works-section{padding-top:4.8vw;padding-left:14px;padding-right:14px}
+      .project-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5.2vw 18px}
+      .project-card{position:relative;display:flex;flex-direction:column;aspect-ratio:1.5;overflow:hidden;border:1px solid var(--line)}
+      .project-visual{flex:1 1 auto;min-height:0;aspect-ratio:auto;border:0}
+      .project-visual img{transform:translateY(0);opacity:1;transition:transform .65s cubic-bezier(.16,1,.3,1),opacity .65s cubic-bezier(.16,1,.3,1)}
+      .project-visual .project-image-hover{position:absolute;inset:0;transform:translateY(14%);opacity:0;transition:transform .65s cubic-bezier(.16,1,.3,1),opacity .65s cubic-bezier(.16,1,.3,1)}
+      .project-visual .project-hover-placeholder{position:absolute;inset:0;transform:translateY(14%);opacity:0;pointer-events:none;transition:transform .65s cubic-bezier(.16,1,.3,1),opacity .65s cubic-bezier(.16,1,.3,1)}
+      .project-visual > .placeholder-art:not(.project-hover-placeholder){transition:transform .65s cubic-bezier(.16,1,.3,1),opacity .65s cubic-bezier(.16,1,.3,1)}
+      .project-card:hover .project-image-default,.project-card:focus-visible .project-image-default{transform:translateY(-14%);opacity:0}
+      .project-card:hover .project-image-hover,.project-card:focus-visible .project-image-hover{transform:translateY(0);opacity:1}
+      .project-card:hover .project-hover-placeholder,.project-card:focus-visible .project-hover-placeholder{transform:translateY(0);opacity:1}
+      .project-card:hover .project-visual > .placeholder-art:not(.project-hover-placeholder),.project-card:focus-visible .project-visual > .placeholder-art:not(.project-hover-placeholder){transform:translateY(-14%);opacity:0}
+      .project-caption{display:none}
+      .project-tag{position:absolute;z-index:1;left:14px;top:14px;padding:7px 13px;border-radius:999px;background:#fff;font-size:17px;font-weight:400;line-height:1;letter-spacing:-.03em;transition:transform .5s cubic-bezier(.16,1,.3,1),background-color .3s ease,color .3s ease}
+      .project-hover-panel{display:grid;grid-template-columns:minmax(0,1fr) 94px;flex:0 0 0;max-height:0;opacity:0;overflow:hidden;border:0;border-top:1px solid transparent;transition:flex-basis .62s cubic-bezier(.16,1,.3,1),max-height .62s cubic-bezier(.16,1,.3,1),opacity .4s ease,border-color .4s ease}
+      .project-hover-meta{display:grid}
+      .project-hover-row{display:grid;grid-template-columns:50px 14px minmax(0,1fr);align-items:center;min-height:45px;padding:0 12px;border-top:1px solid var(--line);color:var(--muted)}
+      .project-hover-row:first-child{border-top:0}
+      .project-hover-label{color:var(--muted);font-family:inherit;font-size:12px;font-weight:400;line-height:1;letter-spacing:.1em;text-transform:uppercase}
+      .project-hover-dot{color:var(--muted);font-family:inherit;font-size:12px;font-weight:400;line-height:1;letter-spacing:.1em}
+      .project-hover-value{color:var(--muted);font-family:inherit;font-size:12px;font-weight:400;line-height:1;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+      .project-hover-mark{position:relative;min-height:135px;border-left:1px solid var(--line)}
+      .project-hover-mark:before{content:"";position:absolute;inset:12px;background:repeating-conic-gradient(from 0deg,transparent 0deg 10deg,var(--line) 10deg 11deg,transparent 11deg 20deg);border-radius:50%;mask-image:radial-gradient(circle,transparent 0 17px,#000 18px)}
+      .project-card:hover .project-hover-panel,.project-card:focus-visible .project-hover-panel{flex-basis:150px;max-height:150px;opacity:1;border-color:var(--line)}
+      .project-card:hover .project-tag,.project-card:focus-visible .project-tag{transform:translateY(-2px);background:#1717ff;color:#fff}
+      .project-card:focus-visible{outline:2px solid #1717ff;outline-offset:5px}
       .home-stage{position:relative;min-height:100vh}
       .site-header{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:8;width:calc(100% - 28px);margin:0;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(290px,.7fr) minmax(250px,.68fr);align-items:stretch;gap:0;min-height:186px;padding:0;border:1px solid var(--line);font-size:inherit;letter-spacing:0;text-transform:none;background:transparent;transition:min-height .62s cubic-bezier(.16,1,.3,1),grid-template-columns .62s cubic-bezier(.16,1,.3,1),box-shadow .42s ease,transform .62s cubic-bezier(.16,1,.3,1)}
       .nav-panel{display:flex;min-height:184px;flex-direction:column;justify-content:space-between;padding:15px 11px 13px}
@@ -57,6 +83,11 @@
       @media(max-width:720px){
         .hero{min-height:100vh;padding:600px 5.5vw 8vw}
         .hero-copy{padding-bottom:0}
+        .works-section{padding-left:10px;padding-right:10px}
+        .project-grid{grid-template-columns:1fr;gap:14vw 0}
+        .project-card{aspect-ratio:1.25}
+        .project-visual{aspect-ratio:auto}
+        .project-hover-panel{grid-template-columns:minmax(0,1fr) 72px}
         .site-header{top:10px;width:calc(100% - 20px);grid-template-columns:1fr;min-height:0}
         .nav-panel{min-height:180px;padding:14px 10px 16px}
         .site-nav a{font-size:var(--nav-size);padding:5px 15px 8px}
@@ -88,22 +119,21 @@
       </header>
       <section class="hero" id="top"><div class="hero-main"><h1>把商品，做成<br>被看见的理由。</h1><div class="hero-copy"><p>专注电商视觉与平面设计，将产品卖点、品牌语气和购买场景，整理成清晰而有记忆点的视觉系统。</p><a class="text-link" href="#works">浏览精选项目 <span aria-hidden="true">↘</span></a></div></div></section>
       </div>
-      <section class="works-section" id="works"><div class="section-heading"><div><h2>项目作品</h2></div></div><div class="filter-row" role="tablist" aria-label="作品分类"><button class="filter-button active" data-filter="全部" role="tab">全部</button><button class="filter-button" data-filter="电商视觉" role="tab">电商视觉</button><button class="filter-button" data-filter="平面设计" role="tab">平面设计</button><button class="filter-button" data-filter="品牌方向" role="tab">品牌方向</button></div><div class="project-grid" id="project-grid"></div></section>
+      <section class="works-section" id="works"><div class="project-grid" id="project-grid"></div></section>
       <section class="about-section" id="about"><div class="about-content"><h2>让视觉替产品<br>先说一句话。</h2><p>我是一名电商视觉设计师 / 平面设计师，擅长从产品卖点、消费场景和品牌语气出发，搭建清晰、克制、可延展的视觉表达。</p><p>工作内容覆盖电商主视觉、详情页、产品合成、包装概念与平面物料。作品集正在持续更新中。</p></div></section>
       <footer class="site-footer" id="contact"><div><h2>有项目想聊？</h2></div><a class="contact-link" href="mailto:Abelliu0606@outlook.com">Abelliu0606@outlook.com <span aria-hidden="true">↗</span></a></footer>
     </main>
     <script>
       const projects=[
-        {id:"yunyang",number:"01",title:"云氧旗舰店",subtitle:"E-commerce visual system",category:"电商视觉",year:"2025",services:["主视觉","详情页","产品合成"],role:"负责云氧旗舰店产品视觉与电商页面创意设计，围绕“天然抑菌、纯净安心、家庭日用”的品牌卖点，完成主视觉风格定位、产品卖点梳理、版式规划、色彩氛围搭建及画面合成设计。",description:"本项目以纸品包装及电商推广图为核心，结合天然竹纤维、抑菌、柔滑等产品特性，打造清新、柔软、可信赖的视觉表达。画面运用云朵、光影、悬浮产品与整齐堆叠等元素，突出产品的轻盈质感与家庭囤货场景，同时通过清晰的卖点标签和模块化排版，帮助用户快速理解产品优势。",image:"works/yunyang-project.png",visual:"visual-yunyang"},
-        {id:"bamboo",number:"02",title:"日常的柔光",subtitle:"Packaging & campaign study",category:"品牌方向",year:"2024",services:["包装概念","Campaign","Art direction"],role:"从产品定位出发，建立日用品品牌的视觉语气与包装概念，梳理从货架识别到线上传播的统一表达。",description:"以低饱和黑白为基底，加入轻盈的纸张肌理和克制的留白，探索日常用品如何在安静的画面中被看见。该项目为概念练习，后续可替换为你的完整项目资料。",visual:"visual-bamboo",placeholder:true},
-        {id:"catalogue",number:"03",title:"无声目录",subtitle:"Editorial graphic design",category:"平面设计",year:"2024",services:["编辑设计","信息层级","印刷物料"],role:"负责内容结构、信息层级与版式系统，将零散的产品信息整理为易读且具节奏感的视觉目录。",description:"以网格系统和高对比排版为核心，将平面设计中的秩序感带入商业沟通。该项目为待补充案例位，适合替换为品牌画册、活动物料或系列海报。",visual:"visual-catalogue",placeholder:true},
-        {id:"still-life",number:"04",title:"静物练习",subtitle:"Product still life direction",category:"电商视觉",year:"2023",services:["场景构建","静物摄影","视觉提案"],role:"围绕产品质感与使用场景，完成静物构图、材质关系和线上传播画面的视觉提案。",description:"用单色背景、硬朗切面和留白关系建立产品的秩序感，让每一个细节都服务于商品本身。该项目为待补充案例位，可以直接替换成你的产品图和项目说明。",visual:"visual-still-life",placeholder:true}
+        {id:"yunyang",number:"01",title:"云氧旗舰店",subtitle:"E-commerce visual system",category:"电商视觉",year:"2025",scope:"CONCEPT, DESIGN",type:"E-COMMERCE PLATFORM",context:"E-commerce",date:"2021",services:["主视觉","详情页","产品合成"],role:"负责云氧旗舰店产品视觉与电商页面创意设计，围绕“天然抑菌、纯净安心、家庭日用”的品牌卖点，完成主视觉风格定位、产品卖点梳理、版式规划、色彩氛围搭建及画面合成设计。",description:"本项目以纸品包装及电商推广图为核心，结合天然竹纤维、抑菌、柔滑等产品特性，打造清新、柔软、可信赖的视觉表达。画面运用云朵、光影、悬浮产品与整齐堆叠等元素，突出产品的轻盈质感与家庭囤货场景，同时通过清晰的卖点标签和模块化排版，帮助用户快速理解产品优势。",image:"works/yunyang-hover.jpg",hoverImage:"works/yunyang-project.png",visual:"visual-yunyang"},
+        {id:"bamboo",number:"02",title:"日常的柔光",subtitle:"Packaging & campaign study",category:"品牌方向",year:"2024",type:"Client based",context:"Studies",date:"Dec / 2024",services:["包装概念","Campaign","Art direction"],role:"从产品定位出发，建立日用品品牌的视觉语气与包装概念，梳理从货架识别到线上传播的统一表达。",description:"以低饱和黑白为基底，加入轻盈的纸张肌理和克制的留白，探索日常用品如何在安静的画面中被看见。该项目为概念练习，后续可替换为你的完整项目资料。",visual:"visual-bamboo",placeholder:true},
+        {id:"catalogue",number:"03",title:"无声目录",subtitle:"Editorial graphic design",category:"平面设计",year:"2024",type:"Client based",context:"Studies",date:"Dec / 2024",services:["编辑设计","信息层级","印刷物料"],role:"负责内容结构、信息层级与版式系统，将零散的产品信息整理为易读且具节奏感的视觉目录。",description:"以网格系统和高对比排版为核心，将平面设计中的秩序感带入商业沟通。该项目为待补充案例位，适合替换为品牌画册、活动物料或系列海报。",visual:"visual-catalogue",placeholder:true},
+        {id:"still-life",number:"04",title:"静物练习",subtitle:"Product still life direction",category:"电商视觉",year:"2023",type:"Client based",context:"Studies",date:"Dec / 2024",services:["场景构建","静物摄影","视觉提案"],role:"围绕产品质感与使用场景，完成静物构图、材质关系和线上传播画面的视觉提案。",description:"用单色背景、硬朗切面和留白关系建立产品的秩序感，让每一个细节都服务于商品本身。该项目为待补充案例位，可以直接替换成你的产品图和项目说明。",visual:"visual-still-life",placeholder:true}
       ];
       const grid=document.querySelector("#project-grid");
       const esc=(value)=>String(value).replace(/[&<>"']/g,(char)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char]));
-      function render(filter="全部"){grid.innerHTML=projects.filter((project)=>filter==="全部"||project.category===filter).map((project,index)=>`<button class="project-card card-${index+1}" data-project="${project.id}" aria-label="查看项目：${esc(project.title)}"><span class="project-visual ${project.visual}">${project.image?`<img src="${project.image}" alt="${esc(project.title)}项目预览">`:`<span class="placeholder-art" aria-hidden="true"><span class="art-number">${project.number}</span></span>`}</span><span class="project-caption"><span><strong>${esc(project.title)}</strong></span><span class="caption-arrow" aria-hidden="true">↗</span></span></button>`).join("");grid.querySelectorAll("[data-project]").forEach((card)=>card.addEventListener("click",()=>openProject(card.dataset.project)));}
+      function render(){grid.innerHTML=projects.map((project,index)=>`<button class="project-card card-${index+1}" data-project="${project.id}" aria-label="查看项目：${esc(project.title)}"><span class="project-visual ${project.visual}">${project.image?`<img class="project-image-default" src="${project.image}" alt="${esc(project.title)}项目预览"><img class="project-image-hover" src="${project.hoverImage||project.image}" alt="" aria-hidden="true">`:`<span class="placeholder-art" aria-hidden="true"><span class="art-number">${project.number}</span></span><span class="placeholder-art project-hover-placeholder" aria-hidden="true"><span class="art-number">${project.number}</span></span>`}<span class="project-tag">${esc(project.title)}</span></span><span class="project-hover-panel" aria-hidden="true"><span class="project-hover-meta"><span class="project-hover-row"><span class="project-hover-label">Scope</span><span class="project-hover-dot">○</span><span class="project-hover-value">${esc(project.scope||project.context)}</span></span><span class="project-hover-row"><span class="project-hover-label">Type</span><span class="project-hover-dot">○</span><span class="project-hover-value">${esc(project.type)}</span></span><span class="project-hover-row"><span class="project-hover-label">Date</span><span class="project-hover-dot">○</span><span class="project-hover-value">${esc(project.date)}</span></span></span><span class="project-hover-mark" aria-hidden="true"></span></span></button>`).join("");grid.querySelectorAll("[data-project]").forEach((card)=>card.addEventListener("click",()=>openProject(card.dataset.project)));}
       function openProject(id){const project=projects.find((item)=>item.id===id);if(!project)return;const overlay=document.createElement("div");overlay.className="project-overlay";overlay.innerHTML=`<aside class="project-detail" role="dialog" aria-modal="true" aria-labelledby="project-title"><button class="close-button" aria-label="关闭项目详情" title="关闭">×</button><div class="detail-visual ${project.visual}">${project.image?`<img src="${project.image}" alt="${esc(project.title)}项目大图">`:`<span class="detail-placeholder">${project.number}</span>`}</div><div class="detail-body"><h2 id="project-title">${esc(project.title)}</h2><div class="detail-copy"><div><strong class="detail-heading">职责</strong><p>${esc(project.role)}</p></div><div><strong class="detail-heading">内容</strong><p>${esc(project.description)}</p></div></div></div></aside>`;document.body.appendChild(overlay);const close=()=>overlay.remove();overlay.addEventListener("click",(event)=>{if(event.target===overlay)close()});overlay.querySelector(".close-button").addEventListener("click",close);document.addEventListener("keydown",function onEscape(event){if(event.key==="Escape"){close();document.removeEventListener("keydown",onEscape)}});}
-      document.querySelectorAll("[data-filter]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-filter]").forEach((item)=>item.classList.toggle("active",item===button));render(button.dataset.filter)}));
       const navigation=document.querySelector("#navigation");
       const updateNavigation=()=>navigation.classList.toggle("is-scrolled",window.scrollY>90);
       window.addEventListener("scroll",updateNavigation,{passive:true});
