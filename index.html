@@ -11,7 +11,9 @@
       @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
     <style>
-      .site-header{position:sticky;top:12px;z-index:8;width:calc(100% - 28px);margin:14px auto 0;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(290px,.7fr) minmax(250px,.68fr);align-items:stretch;gap:0;min-height:308px;padding:0;border:1px solid var(--line);font-size:inherit;letter-spacing:0;text-transform:none;background:rgba(243,243,239,.96);transition:min-height .45s cubic-bezier(.2,.7,.2,1),grid-template-columns .45s cubic-bezier(.2,.7,.2,1),background-color .3s ease,box-shadow .3s ease}
+      :root{--paper:#fff;--compact-size:clamp(18px,1.4vw,24px)}
+      body,.portfolio-shell{background:#fff}
+      .site-header{position:sticky;top:12px;z-index:8;width:calc(100% - 28px);margin:14px auto 0;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(290px,.7fr) minmax(250px,.68fr);align-items:stretch;gap:0;min-height:308px;padding:0;border:1px solid var(--line);font-size:inherit;letter-spacing:0;text-transform:none;background:rgba(255,255,255,.96);transition:min-height .45s cubic-bezier(.2,.7,.2,1),grid-template-columns .45s cubic-bezier(.2,.7,.2,1),background-color .3s ease,box-shadow .3s ease}
       .nav-panel{display:flex;min-height:306px;flex-direction:column;justify-content:space-between;padding:15px 11px 13px}
       .site-nav{display:flex;align-items:flex-start;gap:6px;color:var(--ink)}
       .site-nav a{display:inline-flex;align-items:center;border:2px solid var(--ink);border-radius:999px;padding:4px 14px 7px;font-size:clamp(26px,2.12vw,40px);font-weight:400;line-height:.88;letter-spacing:-.055em;text-transform:none;transition:background-color .3s ease,color .3s ease,border-color .3s ease}
@@ -19,8 +21,10 @@
       .site-nav a:focus-visible{outline:3px solid #1717ff;outline-offset:4px}
       .nav-signature{color:var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
       .header-intro,.header-contact{padding:19px 22px 21px;border-left:1px solid var(--line)}
-      .header-intro{display:flex;align-items:flex-start}
+      .header-intro{position:relative;display:flex;align-items:flex-start}
       .header-intro p{max-width:370px;margin:0;font-size:clamp(25px,2.08vw,39px);line-height:.98;letter-spacing:-.055em}
+      .header-intro-copy,.header-compact-name{transition:opacity .3s ease,transform .3s ease}
+      .header-compact-name{position:absolute;display:block;opacity:0;transform:scale(.94);font-size:var(--compact-size);font-weight:400;line-height:1;white-space:nowrap}
       .header-contact{display:flex;flex-direction:column;align-items:flex-start;font-size:clamp(21px,1.75vw,33px);line-height:1.02;letter-spacing:-.045em}
       .contact-label{margin-bottom:4px}
       .header-email{display:block;transition:color .25s ease}
@@ -29,13 +33,15 @@
       .header-links{display:flex;flex-direction:column;align-items:flex-start;margin-top:36px;gap:2px}
       .header-links a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color .25s ease,transform .25s ease}
       .header-links a:hover,.header-links a:focus-visible{color:#1717ff;transform:translateX(4px)}
-      .site-header.is-scrolled{min-height:72px;background:rgba(243,243,239,.88);box-shadow:0 10px 26px rgba(18,18,18,.08);backdrop-filter:blur(12px)}
+      .site-header.is-scrolled{min-height:72px;background:rgba(255,255,255,.75);box-shadow:0 10px 26px rgba(18,18,18,.08);backdrop-filter:blur(12px)}
       .site-header.is-scrolled .nav-panel{min-height:70px;flex-direction:row;align-items:center;padding:10px 11px}
       .site-header.is-scrolled .nav-signature{display:none}
-      .site-header.is-scrolled .site-nav a{font-size:clamp(17px,1.35vw,24px);padding:5px 12px 7px}
+      .site-header.is-scrolled .site-nav a{font-size:var(--compact-size);padding:5px 12px 7px}
       .site-header.is-scrolled .header-intro{align-items:center;padding:10px 18px}
-      .site-header.is-scrolled .header-intro p{display:-webkit-box;overflow:hidden;font-size:12px;line-height:1.2;letter-spacing:0;-webkit-box-orient:vertical;-webkit-line-clamp:2}
-      .site-header.is-scrolled .header-contact{flex-direction:row;align-items:center;justify-content:flex-end;gap:12px;padding:10px 18px;font-size:12px;line-height:1.1;letter-spacing:0}
+      .site-header.is-scrolled .header-intro-copy{position:absolute;opacity:0;transform:scale(.94);pointer-events:none}
+      .site-header.is-scrolled .header-compact-name{opacity:1;transform:scale(1)}
+      .site-header.is-scrolled .header-contact{flex-direction:row;align-items:center;justify-content:flex-end;gap:12px;padding:10px 18px;font-size:var(--compact-size);line-height:1;letter-spacing:-.045em}
+      .site-header.is-scrolled .header-email{font-size:var(--compact-size);white-space:nowrap}
       .site-header.is-scrolled .contact-label,.site-header.is-scrolled .header-location,.site-header.is-scrolled .header-links{display:none}
       .portfolio-shell{overflow:visible}
       .nav-signature,.hero-kicker,.hero-meta,.section-heading .eyebrow,.about-label,.site-footer .eyebrow,.footer-bottom,.section-note,.project-caption small,.detail-topline,.detail-subtitle,.detail-services,.placeholder-note{display:none!important}
@@ -50,9 +56,10 @@
         .header-links{margin-top:25px}
         .site-header.is-scrolled{min-height:0}
         .site-header.is-scrolled .nav-panel{min-height:72px;padding:10px}
-        .site-header.is-scrolled .site-nav a{font-size:21px;padding:5px 12px 7px}
+        .site-header.is-scrolled{--compact-size:21px}
+        .site-header.is-scrolled .site-nav a{font-size:var(--compact-size);padding:5px 12px 7px}
         .site-header.is-scrolled .header-intro{display:none}
-        .site-header.is-scrolled .header-contact{min-height:72px;padding:10px 14px;font-size:16px}
+        .site-header.is-scrolled .header-contact{min-height:72px;padding:10px 14px;font-size:var(--compact-size)}
       }
     </style>
   </head>
@@ -62,7 +69,7 @@
         <div class="nav-panel">
           <nav class="site-nav" aria-label="主导航"><a href="#works">Work</a><a href="#about">About</a></nav>
         </div>
-        <div class="header-intro"><p>专注电商视觉与平面设计，将产品、品牌与购买场景整理成清晰而有记忆点的视觉表达。</p></div>
+        <div class="header-intro"><p class="header-intro-copy">专注电商视觉与平面设计，将产品、品牌与购买场景整理成清晰而有记忆点的视觉表达。</p><strong class="header-compact-name">柳鑫东</strong></div>
         <div class="header-contact">
           <span class="contact-label">联系：</span>
           <a class="header-email" href="mailto:Abelliu0606@outlook.com">Abelliu0606@outlook.com</a>
