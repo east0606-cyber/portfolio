@@ -172,7 +172,7 @@
       function openProjectAccessible(id){const project=projects.find((item)=>item.id===id);if(!project)return;const trigger=document.activeElement;const overlay=document.createElement("div");overlay.className="project-overlay";overlay.innerHTML=`<aside class="project-detail" role="dialog" aria-modal="true" aria-labelledby="project-title"><button class="close-button" aria-label="关闭项目详情" title="关闭">×</button><div class="detail-visual ${project.visual}">${project.image?`<img src="${project.image}" alt="${esc(project.title)}项目大图" decoding="async">`:`<span class="detail-placeholder">${project.number}</span>`}</div><div class="detail-body"><h2 id="project-title">${esc(project.title)}</h2><div class="detail-copy"><div><strong class="detail-heading">职责</strong><p>${esc(project.role)}</p></div><div><strong class="detail-heading">内容</strong><p>${esc(project.description)}</p></div></div></div></aside>`;document.body.appendChild(overlay);const dialog=overlay.querySelector(".project-detail");const closeButton=overlay.querySelector(".close-button");let closed=false;const close=()=>{if(closed)return;closed=true;document.removeEventListener("keydown",onKeydown);overlay.remove();if(trigger instanceof HTMLElement)trigger.focus()};const onKeydown=(event)=>{if(event.key==="Escape"){close();return}if(event.key!=="Tab")return;const focusable=[...dialog.querySelectorAll('button,a[href],[tabindex]:not([tabindex="-1"])')];if(!focusable.length){event.preventDefault();return}const first=focusable[0];const last=focusable[focusable.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}};overlay.addEventListener("click",(event)=>{if(event.target===overlay)close()});closeButton.addEventListener("click",close);document.addEventListener("keydown",onKeydown);closeButton.focus()}
       openProject=openProjectAccessible;
       const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
-      const smoothScroll={current:window.scrollY,target:window.scrollY,frame:0,ease:.075,applying:false};
+      const smoothScroll={current:window.scrollY,target:window.scrollY,frame:0,ease:.04,applying:false};
       const clampScroll=(value,min,max)=>Math.min(Math.max(value,min),max);
       const getScrollLimit=()=>Math.max(0,document.documentElement.scrollHeight-window.innerHeight);
       const updateScrollVisuals=()=>{
@@ -205,12 +205,12 @@
       const animateScroll=()=>{
         const distance=smoothScroll.target-smoothScroll.current;
         smoothScroll.current+=distance*smoothScroll.ease;
-        if(Math.abs(distance)<.25){smoothScroll.current=smoothScroll.target}
+        if(Math.abs(distance)<.12){smoothScroll.current=smoothScroll.target}
         smoothScroll.applying=true;
         window.scrollTo(0,smoothScroll.current);
         smoothScroll.applying=false;
         updateScrollVisuals();
-        smoothScroll.frame=Math.abs(smoothScroll.target-smoothScroll.current)>.25?requestAnimationFrame(animateScroll):0;
+        smoothScroll.frame=Math.abs(smoothScroll.target-smoothScroll.current)>.12?requestAnimationFrame(animateScroll):0;
       };
       const startSmoothScroll=()=>{if(!smoothScroll.frame){smoothScroll.frame=requestAnimationFrame(animateScroll)}};
       const handleWheel=(event)=>{
